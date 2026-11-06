@@ -1,0 +1,18 @@
+# Development outputs and machine-specific files
+.review/
+.openai/
+__pycache__/
+*.pyc
+tests/arcade-dom.json
+*.zip
+*.tar.gz
+*.log
+.DS_Store
+Thumbs.db
+.env
+.env.*
+!.env.example
+
+# Unused artwork retained locally from the original version
+dist/assets/snake.png
+dist/assets/number.png

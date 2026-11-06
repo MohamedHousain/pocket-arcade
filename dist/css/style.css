@@ -1,0 +1,92 @@
+/* Shared external stylesheet: Chapters 4 and 5. No frameworks or web fonts. */
+body { margin: 0; background: #f6f3e9; color: #243e35; font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 1.6; }
+a { color: #244e3f; text-decoration: underline; }
+a:hover { color: #a6412c; }
+a:focus, input:focus, select:focus, textarea:focus { outline: 3px solid #aa482f; outline-offset: 4px; }
+img { max-width: 100%; height: auto; }
+.wrap { width: 88%; max-width: 1060px; margin: 0 auto; }
+.skip { position: absolute; left: -2000px; }
+.skip:focus { left: 12px; top: 12px; background: white; padding: 10px; z-index: 5; }
+.site-header { border-bottom: 1px solid #b9c0ad; padding: 22px 0 17px; }
+.brand { font-family: Georgia, 'Times New Roman', serif; font-size: 29px; font-weight: bold; text-decoration: none; letter-spacing: -1px; }
+.brand-mark { color: #ac482e; margin-right: 8px; }
+.tagline { margin: 0; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
+nav { margin-top: 18px; line-height: 2.5; }
+nav a { margin-right: 24px; font-size: 13px; text-decoration: none; }
+nav .current { border-bottom: 2px solid #ac482e; padding-bottom: 5px; font-weight: bold; }
+h1, h2, h3 { font-family: Georgia, 'Times New Roman', serif; font-weight: normal; line-height: 1.12; }
+h1 { font-size: 3.8em; letter-spacing: -2px; margin: 20px 0; }
+h2 { font-size: 2.2em; margin: 15px 0; }
+h3 { font-size: 1.55em; margin: 12px 0; }
+p { margin: 12px 0; }
+.eyebrow { font-family: 'Courier New', monospace; font-size: 12px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; }
+.hero { text-align: center; padding: 48px 0 30px; }
+.hero h1 { margin: 17px 0; text-shadow: 1px 1px #ffffff; }
+.hero em { color: #a64731; }
+.intro { max-width: 540px; margin: 20px auto; font-size: 17px; }
+.button { background: #244e3f; color: #fffaf0; padding: 12px 21px; text-decoration: none; font-size: 14px; border: 1px solid #244e3f; }
+.button:hover { background: #18382d; color: white; }
+.button-line { margin: 30px 0; line-height: 3.2; }
+.text-link { margin-left: 18px; font-size: 14px; }
+.hero-art { display: block; width: 100%; margin: 28px auto 0; border-top: 1px solid #b9c0ad; border-bottom: 1px solid #b9c0ad; }
+.caption { font-size: 12px; color: #56665a; }
+.section-top { border-bottom: 2px solid #294b3e; padding-bottom: 16px; margin-top: 36px; }
+.game-row { position: relative; padding: 29px 0 30px 31%; border-bottom: 1px solid #b9c0ad; min-height: 150px; }
+.game-row img { position: absolute; left: 0; top: 30px; width: 25%; border: 1px solid #aeb9a5; }
+.game-row .eyebrow { color: #8b472d; font-size: 11px; letter-spacing: 1px; }
+.game-row h3 { font-size: 29px; }
+.game-row p { max-width: 510px; }
+.game-row .play-link { font-size: 14px; font-weight: bold; }
+.small-note { font-size: 13px; color: #526156; }
+.club-note { padding: 30px 0; margin-top: 32px; border-top: 1px solid #b9c0ad; }
+.club-note p { max-width: 690px; }
+.site-footer { margin-top: 55px; border-top: 1px solid #b9c0ad; padding: 22px 0 30px; font-size: 12px; color: #526156; }
+.site-footer a { margin-right: 18px; }
+.page-heading { padding: 35px 0 20px; }
+.page-heading h1 { font-size: 3.25em; }
+.back-link { font-size: 13px; }
+.game-cover { width: 100%; max-width: 650px; display: block; border: 1px solid #b9c0ad; }
+.rules { max-width: 720px; padding: 12px 0; }
+.rules li { margin-bottom: 9px; }
+.facts { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 14px; }
+.facts caption { text-align: left; font-family: Georgia, serif; font-size: 24px; padding: 12px 0; }
+.facts th, .facts td { border-bottom: 1px solid #bac3b2; padding: 13px 9px; text-align: left; }
+.facts th { background: #e7eadb; }
+.launch { padding: 22px 25px; border: 1px solid #aab7a0; background: #edf0e2; margin: 24px 0; box-shadow: 4px 4px 0 #d9ddcd; }
+.launch h2 { font-size: 26px; }
+.launch p { max-width: 670px; }
+.result { padding: 24px 0; border-top: 2px solid #244e3f; }
+.result h2 { color: #a64731; }
+.score { font-family: 'Courier New', monospace; font-size: 2.8em; line-height: 1.2; margin: 20px 0; }
+.board { border-collapse: collapse; width: 100%; max-width: 440px; background: #e5e9d7; margin: 20px 0; table-layout: fixed; }
+.board caption { text-align: left; padding-bottom: 10px; font-size: 13px; }
+.board td { border: 2px solid #f6f3e9; height: 47px; text-align: center; font-family: 'Courier New', monospace; font-weight: bold; color: #294b3e; }
+.board .head { background: #244e3f; color: #fff; }
+.board .body { background: #76916a; color: white; }
+.board .food, .board .mine { background: #ad4a32; color: white; }
+.board .open { background: #f0e3bc; }
+.board .covered { background: #b8c5a5; }
+.board small { display: block; font-size: 9px; font-weight: normal; }
+.legend { font-size: 13px; }
+.prose { max-width: 740px; }
+.prose h2 { margin-top: 35px; font-size: 29px; }
+.form-row { margin: 20px 0; }
+label { display: block; font-size: 14px; margin-bottom: 5px; }
+input, select, textarea { font: inherit; background: #fffcf4; color: #243e35; border: 1px solid #8f9e87; padding: 8px; max-width: 90%; }
+textarea { width: 90%; }
+fieldset { border: 1px solid #aab7a0; margin: 28px 0; padding: 20px; }
+legend { padding: 0 8px; font-family: Georgia, serif; font-size: 24px; }
+.choice label { display: inline; margin-right: 16px; }
+input[type="submit"], input[type="reset"] { cursor: pointer; padding: 9px 16px; margin: 5px 8px 5px 0; }
+input[type="submit"] { background: #244e3f; color: white; }
+.spark { animation: welcome 1s ease 1; }
+@keyframes welcome { from { color: #d5b06b; } to { color: #ac482e; } }
+/* Media types are covered in Chapter 4. Print keeps rules and results readable. */
+@media print {
+ body { background: white; color: black; font-size: 12pt; }
+ .site-header, .site-footer, .button-line, .skip, .launch { display: none; }
+ .wrap { width: 100%; max-width: none; }
+ a { color: black; }
+ .board td { border: 1px solid #666; }
+ h1 { font-size: 30pt; }
+}
