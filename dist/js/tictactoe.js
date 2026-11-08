@@ -4,7 +4,6 @@ var ticPlayer = "X";
 var ticStarter = "O";
 var ticMoves = 0;
 var ticEnded = false;
-var ticWinner = "";
 var xWins = 0;
 var oWins = 0;
 var ticDraws = 0;
@@ -46,7 +45,6 @@ function placeMark(index) {
     if (ticLine(3, 5, 7)) { won = true; }
     var status = document.getElementById("ttt-status");
     if (won) {
-        ticWinner = ticPlayer;
         ticEnded = true;
         if (ticPlayer == "X") { xWins++; } else { oWins++; }
         status.textContent = "Player " + ticPlayer + " wins! Start a new round to play again.";
@@ -70,8 +68,6 @@ function placeMark(index) {
 }
 
 function newTicRound() {
-    beginSessionRound("tictactoe");
-    ticWinner = "";
     if (ticStarter == "X") { ticStarter = "O"; } else { ticStarter = "X"; }
     ticPlayer = ticStarter;
     ticMoves = 0;

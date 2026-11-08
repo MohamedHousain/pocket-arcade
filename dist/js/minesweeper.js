@@ -155,7 +155,6 @@ function setMineMode(flagging) {
 }
 
 function resetMines() {
-    beginSessionRound("minesweeper");
     mineEnded = false;
     mineSafe = 0;
     mineFlags = 0;

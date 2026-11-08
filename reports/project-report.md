@@ -2,198 +2,187 @@
 
 Web Programming course project, University of Sharjah, Fall 2026–2027.
 
-Pocket Arcade now contains seven mouse-controlled games. Each game is played directly on the website and has a Save session button. Saved results and all active game boards share one arcade document, so switching games preserves progress without browser storage. Refreshing starts a new visit with empty results.
+Pocket Arcade contains seven games playable directly on their webpages: Minesweeper, Memory Match, Tic-tac-toe, Connect the Dots, Lights Out, Code Guess and Number Slide. The site uses plain HTML, CSS and browser JavaScript, with no libraries or frameworks. HTML supplies the controls and content, CSS formats the boards, and plain JavaScript applies the game rules. There are no external libraries or frameworks.
 
-The website uses HTML, CSS and plain JavaScript only. The implementation extends the supplied introductory slides with small functions, event handlers and DOM updates. Persistent browser storage is outside the project scope. This report distinguishes the course foundation from those approved additions and describes the final local version.
+This report describes the current static build. The previous browser-dialog games have been replaced. The user approved a limited extension beyond the supplied slides: small functions, click handlers and updates to page elements. These additions are identified explicitly below rather than described as techniques fully taught in the source material.
 
 ## 1. Requirements and scope
 
-The project description supplied the assignment requirements; the proposal supplied the arcade concept and team. The final project scope uses mouse controls, seven games, a route puzzle and temporary saved sessions. Instructions in the documents were treated as source requirements, not separate permission to create accounts or submit work.
+The project description supplied the assignment requirements. The proposal supplied the arcade topic and original game ideas. The user's later instructions changed the game selection to mouse-only games and required local hosting. Instructions inside the reference documents were treated as specifications, not separate permission to create accounts or submit work.
 
-| Requirement | Final implementation |
+| Requirement | Current implementation |
 | --- | --- |
-| At least five linked webpages | Home, arcade, seven rules pages, about and session-help pages, plus six compatibility pages |
-| Frontend technologies only | Static HTML, CSS, JavaScript and local PNG assets |
-| HTML content and multimedia | Semantic sections, headings, links, lists, tables, buttons, original illustrations and a short CSS animation |
-| Consistent CSS formatting | Shared colours, fonts, spacing, navigation, controls and responsive boards |
-| JavaScript interaction | Clickable game boards, counters, results, resets and session saving |
-| Input verification | Invalid moves, occupied squares, out-of-order checkpoints, incomplete guesses and duplicate colour choices are rejected |
-| Multiple games with a unified design | Seven games in one arcade with consistent controls and result presentation |
-| Performance tracking | Round snapshots, game counters, memory best and Tic-tac-toe tallies held only in the current document |
-| Local access | http://localhost:8080 with no account or external game service |
-| GitHub source repository | The current project is prepared as a public Git repository; development history before its initial commit is not reconstructed |
+| At least five linked webpages | Ten main pages: home, seven games, score sheet and about |
+| Frontend technologies only | HTML, two CSS files, seven JavaScript files and local PNG images |
+| Multimedia | Original game illustrations and a brief CSS colour animation |
+| Consistent CSS formatting | Shared navigation, colours, typography, rules and board presentation |
+| JavaScript interaction | Clickable game controls, changing boards, scores and results |
+| Input verification | Illegal moves and repeated actions are rejected; completed games stop accepting moves |
+| A collection of puzzles | Minesweeper, Memory Match, Tic-tac-toe, Connect the Dots, Lights Out, Code Guess and Number Slide |
+| Performance tracking | Round scores, a page-local memory best, a Tic-tac-toe match tally and a printable manual sheet |
+| Local access | http://localhost:8080, with no ChatGPT login or game service |
+| GitHub progress uploads | Ready for a static upload; no upload performed because no destination repository was supplied |
 
-Snake and the number puzzle were replaced by mouse-controlled games. Saved profiles, daily puzzle services and permanent high scores are not implemented. The final website uses constrained board buttons rather than a manual score-entry form. The original sheet was replaced by session snapshots that require no copying of scores.
+The proposal's Snake and extra number puzzle were replaced with Memory Match and Tic-tac-toe. This removes the need for keyboard controls or real-time movement. Persistent profiles and daily puzzles are outside the agreed minimal scope. Images and CSS animation supply visual media; there is no audio or video player. If the instructor requires a specific media format, that requirement should be confirmed separately.
 
-The site contains visual media, not an audio or video player. It demonstrates relevant course techniques without adding every input type or CSS effect mentioned in the lectures. If the instructor requires a specific media format, that interpretation should be confirmed separately.
+## 2. Files and navigation
 
-## 2. Site structure and session lifetime
-
-The home page introduces the seven games. Each game has a separate rules page, preserving a conventional multi-page website. The playable boards themselves are sections inside arcade.html. The top game tabs are links such as arcade.html#memory. Changing the part after the hash does not load a new document.
-
-arcade.js reads the selected hash, shows the corresponding section and hides the others. It does not restart the games. The hashchange handler also handles browser Back/Forward between game views. An unrecognised hash safely opens Minesweeper.
-
-The same document contains the Saved sessions view. A record is an HTML table row, and its values are copies of the current score and state. No record is written to a server, cookie, localStorage, sessionStorage, file or database. Refreshing recreates the page and its variables, so the table starts empty. Closing the tab discards the visit. Browsers may restore a previous document through Back/Forward caching; that is not persistent storage implemented by this site. Game tabs are the intended way to switch while keeping a visit together.
-
-| File group | Purpose |
+| Page | Purpose |
 | --- | --- |
-| index.html | Collection and game entry links |
-| arcade.html | Seven playable boards and the saved-results table |
-| Named game HTML pages | Rules and links into the arcade |
-| about.html and scorecard.html | Team/project description and explanation of temporary sessions |
-| Six former addresses | Compatibility links; no old prompt scripts |
-| css/style.css and css/games.css | Page appearance, boards, state styles and print rules |
-| Seven game scripts | Game-specific state and rules |
-| js/sessions.js | Capture, update and remove result snapshots |
-| js/arcade.js | Show the selected panel without reloading |
+| index.html | Introduces the collection and links directly to each playable board |
+| minesweeper.html | Six by six board, reveal/flag controls, status and restart buttons |
+| memory.html | Sixteen clickable cards, turn counter and manual flip-back control |
+| tictactoe.html | Nine squares for two players sharing the screen, with match scores |
+| dots.html | Twelve-dot memory challenge, connecting lines and three patterns |
+| lightsout.html | Five by five board; each move toggles a cross of lights |
+| codeguess.html | Four-colour code, six attempts and exact/misplaced clues |
+| numberslide.html | Solvable four by four sliding tile board |
+| scorecard.html | Manual worksheet that can be printed using the browser |
+| about.html | Project description, limitations and proposal team |
 
-Scripts are loaded after the HTML, so the buttons and counters already exist when the scripts look them up. sessions.js loads first because each game calls its round-initialisation helper. There is no package installation or build step needed to run the delivered website.
+Six former page addresses remain as simple compatibility pages linking to the new games. They no longer run the earlier prompt scripts. The runtime game scripts are minesweeper.js, memory.js, tictactoe.js, dots.js, lightsout.js, codeguess.js and numberslide.js. Shared presentation is in css/style.css; the game controls and small-screen adjustments are in css/games.css.
 
-## 3. Course techniques and approved additions
+Each playable page loads its script after the HTML controls have been declared. This means the elements already exist when the script looks them up. There is no build system, dependency installation or import step for the website.
 
-| Supplied material | Relevant foundation |
+## 3. Techniques grounded in the course material
+
+| Source | Concepts | Use in this project |
+| --- | --- | --- |
+| Chapter 1 PDF, pages 8–19 and 29 | Browser/server model, client-side scripting and static hosting | A local host delivers files. The browser performs all game calculations. |
+| Chapter 2 HTML slides | Document structure, headings, sections, links, images, lists, tables and forms | Navigation, game instructions, illustrations, score reference and worksheet controls |
+| Chapter 3 slides | HTML5 date and number inputs with constraints | Date control and a 1–5 rating field on the score sheet |
+| Chapter 4 CSS slides | External stylesheets, selectors, colours, fonts, positioning, dimensions and box model | Consistent page appearance, rectangular boards, positioned dots, margins, padding and borders |
+| Chapter 4 media-type material | Print-specific styles | Navigation and interactive controls are omitted from printed content |
+| Chapter 5 slides | Shadows and keyframe animation | Modest panel shadows and a one-time colour change on the brand symbol |
+| Chapter 6 JavaScript slides | Variables, primitive values, strings, arithmetic, parseInt, comparisons and document concepts | Scores, board coordinates, labels, matching checks and arithmetic deal layouts |
+| Chapter 7 JavaScript slides | if/else, while, nested decisions, counters and compound assignment | Game turns, board scans, win checks, score totals and reset loops |
+
+The website demonstrates the relevant ideas in context. It does not attempt to add every form input type or every CSS effect mentioned in the lectures. The landing page uses Flexbox and CSS Grid. There is no CSS framework or downloaded font.
+
+## 4. The approved additions
+
+### Small functions
+
+A function gives a repeated task a name. For example, flipCard(index) handles a selected memory card, and resetMines() returns Minesweeper to its starting state. Parameters such as index identify the clicked square; return passes a result back to the calling code. An early return stops a handler when a move is invalid.
+
+The function bodies still use the course's variables, arithmetic, decisions and while loops. Helper functions avoid copying the same instructions into every button. There are no arrow functions, classes, modules, asynchronous functions or custom data objects.
+
+### Click handlers
+
+An HTML button calls a named function through its onclick attribute. For example, a Tic-tac-toe square uses `onclick="placeMark(1)"`. When the visitor clicks the square, the browser runs placeMark with the square number 1.
+
+The original board pages use onclick handlers. Lights Out, Code Guess and Number Slide use native addEventListener handlers and ordinary buttons. A mouse or tap is sufficient; there is no typing, dragging, right-click requirement or keyboard game control. Native buttons also retain normal browser accessibility behaviour.
+
+### Updating the document
+
+The browser's document object represents the page. `document.getElementById("memory-moves")` locates the score element by its HTML id. Assigning its textContent changes the displayed score without reloading the page.
+
+| DOM feature | Purpose |
 | --- | --- |
-| Chapter 1 PDF | Browser/server distinction, client-side scripting and static hosting |
-| Chapter 2 HTML slides | Document structure, semantic sections, headings, relative links, images with alternatives, lists, tables and controls |
-| Chapter 3 HTML5 slides | Input types and validation concepts were reviewed; the final game interfaces use constrained buttons rather than free-text form input |
-| Chapter 4 CSS slides | External stylesheets, selectors, fonts, colours, dimensions, positioning, box model and media types |
-| Chapter 5 CSS slides | Text/box shadows and keyframe animation |
-| Chapter 6 JavaScript slides | var, strings, numbers, Boolean values, arithmetic, parseInt, comparisons and the document concept |
-| Chapter 7 JavaScript slides | Decisions, nested conditions, while loops, counters and compound assignment |
+| getElementById | Find an existing board button, score or message |
+| textContent | Show a symbol, mark, number or status message as text |
+| className | Apply the appropriate covered, open, matched or winning CSS appearance |
+| disabled | Prevent clicking a finished square or an unavailable control |
+| value | Keep a card's pair number or a mine square's covered/open/flagged state |
+| style.display | Show connecting lines and switch between dot puzzles |
+| setAttribute | Update accessible descriptions and the selected reveal/flag mode |
 
-Functions, event handlers and DOM updates are the agreed extensions. They are not presented as topics fully taught in the supplied chapters. Supporting details include combined Boolean operators, accessible descriptions, responsive width queries and hash-based navigation. There is no Flexbox, CSS Grid, framework, canvas, SVG or external font.
+These are small DOM updates, not a framework. The original game boards are written in the HTML. The three restored games create their buttons with document.createElement and clear their board containers between moves. No page imports or fetches external content.
 
-### Functions and event handlers
+Combined conditions use the logical operators && (both conditions), || (either condition) and ! (not). These are shorthand for combining the Boolean decisions used in the course; they should also be explained during the project discussion. For example, a click is ignored if the game has ended OR the square already contains a mark.
 
-A function names a task, such as flipCard(index) or resetMines(). Its parameter identifies the selected square. A return value communicates a result, and an early return rejects an invalid action. Each function body uses straightforward variables, arithmetic, conditions and loops.
+Additional presentation details include responsive screen-width media queries, visible focus outlines, disabled/selected control styling and circular dot buttons. Accessible labels and live status messages help describe changing boards. These supporting details are not claimed as exact copies of lecture examples.
 
-HTML buttons call these functions with onclick. For example, a square uses `onclick="placeMark(1)"`. The routing script uses window.onhashchange to respond when a game link changes the hash. There are no timers, asynchronous functions, classes, modules, arrow functions or custom data objects.
-
-The logical operators &&, || and ! combine Boolean conditions: both, either, and not. For example, a move is rejected if the game has ended OR the selected square is already occupied. These should be explained alongside the course's decision statements.
-
-### Document updates
-
-| Feature | Purpose |
-| --- | --- |
-| getElementById | Find a known square, card, counter or table |
-| textContent | Update text without interpreting it as HTML |
-| className | Select covered, open, matched, current or winning appearance |
-| disabled | Stop unavailable buttons accepting clicks |
-| value | Store a tile number, pair number, square state or round number |
-| style.display | Show a game panel, path segment or results table |
-| setAttribute | Update accessible labels, selected modes and remove-button handlers |
-| createElement and appendChild | Build result rows and Codebreaker guess history |
-| firstChild, parentNode and removeChild | Clear or remove those rows |
-| scrollIntoView | Bring the arcade tabs into view after switching panels |
-| location.hash and substring | Read the selected game name from the hash link |
-
-All game-board elements are written in HTML. Scripts update their existing properties. The result/history tables add small DOM elements as needed. No innerHTML strings, array-based board engine or external requests are used.
-
-## 4. Game algorithms
+## 5. Game algorithms
 
 ### Minesweeper
 
-The board has 36 squares with six mines. Three prepared layouts are selected by simple conditions. The first square is safely opened at the beginning. The row of a zero-based index is `parseInt(index / 6)`, and the column is `index % 6`.
+The board has 36 buttons arranged in six rows. Six positions contain mines, leaving 30 safe squares. The isMine function identifies the positions for each of three prepared layouts. They are fixed practice boards, not randomly generated puzzles. The first square is always opened safely at the start.
 
-To calculate a clue, the script compares a square's row and column with each mine. A mine is adjacent when both coordinate differences lie between -1 and 1, including diagonals. The square's button value stores covered, open or flagged.
+An internal square index runs from 0 to 35. Its row is `parseInt(index / 6)` and its column is `index % 6`. To count neighbouring mines, adjacentMines compares each mine's row and column with the selected square. A mine touches the square when both coordinate differences are between -1 and 1, including diagonals.
 
-Reveal mode opens safe squares, while flag mode toggles a flag. Six flags are permitted. Flagged squares cannot be accidentally revealed, and repeated clicks on open squares do not increase progress. Open zero-clue squares expand their safe neighbours through repeated while-loop scans until no new squares open. Flagged squares stay closed.
+The button value records covered, open or flagged. Reveal mode opens a covered safe square. Flag mode adds or removes a flag instead. The script allows at most six flags, prevents a flagged square being revealed, and never awards additional progress for an already open square.
 
-Revealing all 30 safe squares wins. Selecting a mine ends the game, reveals the mines and locks the board. The layouts are fixed practice puzzles and are not claimed to be solvable without guessing.
+Opening a square with zero neighbouring mines also opens its surrounding safe squares. A while loop repeatedly scans open zero squares until no new squares appear. This implements an expanding empty area without arrays, recursion or a queue. Flagged squares remain covered until the player removes the flag.
+
+Opening a mine reveals all mine locations, ends the round and disables the board. Revealing all 30 safe squares wins. Restart repeats the current layout; the next-board button cycles through the three layouts. The starting square is safe, but the game does not promise that every board can be solved without guessing.
 
 ### Memory Match
 
-Sixteen cards contain eight pairs. Each card value identifies its pair, and its class records whether it is face down, face up or matched. Two scalar variables identify the currently selected cards.
+Sixteen buttons contain eight pairs. Each card's value stores a pair number from 1 to 8. The visible label is a question mark while face down, and a symbol when revealed. Descriptive labels identify the symbols for assistive technology.
 
-A second distinct card completes one turn. Matching pairs remain visible and disabled. A mismatch stays visible until Turn cards over is clicked; another card cannot be opened meanwhile. No timer is needed. Repeated clicks on the same card do not form a pair.
+The variables memoryFirst and memorySecond identify the current two cards. The first click reveals a card. The second distinct click increments the turn count and compares their values. A matching pair stays face up and becomes disabled. A mismatch remains visible while the player studies it; clicking Turn cards over hides the pair. Other cards cannot be opened while the mismatch is waiting.
 
-Three deterministic deals use arithmetic to rearrange sixteen positions, followed by if statements assigning each pair twice. Completing all eight pairs updates the best completed turn count, which stays in a variable while the arcade remains loaded.
+There is deliberately no timer. Clicking the same card twice does not count as a pair, and clicking an already matched card has no effect. Completing eight pairs ends the round and updates the best completed turn count. That best remains in a variable only while the page is open.
+
+The New deal button cycles through three deterministic arrangements. Arithmetic maps the card position to one of sixteen prepared positions using `(index * 5 + memoryDeal * 3) % 16`. The mapping visits every position once in each deal. A sequence of if statements then assigns the eight pairs, each appearing twice. No random-number generator or array is required.
 
 ### Tic-tac-toe
 
-Two people share one screen. The nine button labels form the board state. A valid click writes X or O, disables the square and tests the three rows, three columns and two diagonals through a small helper function.
+This game has two human players sharing one screen. Each button's textContent is either empty, X or O, so the displayed board also stores its state. A valid click writes the current player's mark and disables that square.
 
-A winning line is highlighted and increases that player's score once. Filling all squares without a win records a draw. The board locks at the end. New round retains scores and alternates starters; Reset scores begins a fresh match. There is no computer opponent.
+The ticLine helper compares three specified squares with the current player's mark. The main handler checks the three rows, three columns and two diagonals. A completed line is highlighted and the winning player's score increases once. If nine moves finish without a line, the draw counter increases instead. The remaining buttons are disabled after the round ends.
+
+New round clears the board, retains match scores and alternates the starting player. Reset scores clears the match and returns to X starting. The script ignores occupied-square clicks and clicks after the round has ended. There is no computer opponent or online multiplayer service.
 
 ### Connect the Dots
 
-This is now a route puzzle, not a number-clicking exercise. The player starts at checkpoint 1 and must pass through checkpoints 2, 3 and 4 in order before finishing at 5. All 25 squares must be visited exactly once.
+Each pattern has twelve HTML buttons placed at prepared CSS percentage coordinates. The player studies their numbers, then hides them before playing. The dot numbers remain in accessible button labels. Correct clicks reveal the connecting CSS line segments and advance the sequence.
 
-A button's value records its position in the route, with zero meaning unvisited. A move must be one square horizontally or vertically from the current endpoint. The script rejects jumps, diagonal movement, revisiting, skipped checkpoints and reaching the final checkpoint before the rest of the board is filled.
+A wrong later dot counts as a mistake and costs five points. Three mistakes end the round. An optional hint outlines the next dot for a ten-point penalty. Connected dots are disabled. Each correct dot earns ten points, so the maximum is 120; the score never drops below zero.
 
-Each accepted move shows a prepared CSS line between the squares. Undo finds the button with the preceding visit number, hides that line, removes the latest step and restores the expected checkpoint if necessary. Clicking the previous square is also an undo action. The game detects when no valid next move remains and suggests backtracking.
+Three scattered layouts give different patterns. Start again reveals the numbers and clears the current round; Next puzzle cycles to another layout. The game uses ordinary buttons, CSS lines and browser JavaScript, without canvas or a drawing library.
 
-Three layouts have independently verified complete solutions. There is no automatic indication of the next route square. Progress and undo count are recorded instead of the old easy puzzle's point total.
+## 6. Validation and progress
 
-### Lights Out
+Input verification means checking whether the selected action is allowed. Minesweeper checks square state and available flags. Memory Match checks whether a first card is already selected and whether a mismatched pair still needs hiding. Tic-tac-toe checks whether a square is empty and whether play has ended. Connect the Dots checks the expected number. These checks are present in the functions as well as in disabled buttons.
 
-A move toggles a selected square and its immediate horizontal and vertical neighbours. Button values record whether lights are on or off. A loop counts the remaining lights after each move; reaching zero wins and locks the board.
+Messages appear beside the board, never in alert or prompt dialogs. The scripts use fixed text, symbols and calculated numbers. textContent updates the display as text, rather than interpreting it as HTML.
 
-Each of three starting patterns is created by applying legal toggles to an all-off board. Repeating those toggles solves it because toggling a square twice cancels the change. This guarantees solvability without a search algorithm or stored solution array.
+No data is stored or transmitted. Memory Match's best and Tic-tac-toe's tallies exist only in ordinary JavaScript variables. Navigation or reloading clears them. The score sheet is a manual form with no submit button or backend; it can be printed for a lasting record.
 
-### Sliding Tiles
+## 7. Design and hosting
 
-Nine button values hold numbers 1–8 and a zero for the empty square. A tile moves only if it touches the empty square horizontally or vertically. A move swaps the two values and updates the blank's position. The solved check compares each position with its expected number.
+The design retains warm paper colours, dark green controls, rust accents, serif headings and simple game illustrations. Playable boards now appear near the top of each game page, followed by short instructions. A visitor can start playing immediately without navigating to a separate result page.
 
-New puzzles begin solved and are scrambled through legal moves, preserving solvability. An arithmetic sequence produces direction choices; division by 64 selects one of four ranges. Immediate reverse moves are avoided. A separate attempt limit guarantees that setup cannot loop forever. If a scramble happens to end solved, one extra legal move ensures that the player receives an unfinished board.
+The site uses locally included PNG images and system fonts. CSS handles the board sizes, button states, connecting lines and narrow-window adjustments. A short brand animation runs once, and there are no continuous animations during play. Print styles remove interactive controls.
 
-### Codebreaker
+The local server serves the dist directory at http://localhost:8080. The included launcher uses the existing Python installation only to deliver static files. No Python code runs in the site, and there is no application backend. The same files can also be opened directly with dist/index.html.
 
-The player selects four different colours by clicking four pegs, then submits a guess. The secret uses four of six available colours. All colours also have letter/name labels.
+The static site is published at https://pocket-arcade-course-2026.equalmonkey.chatgpt.site with its existing access settings. The local files also run without that platform. The separate GitHub requirement remains outstanding because no repository destination was supplied.
 
-The script checks that every peg is selected and that no colour repeats. Invalid guesses do not consume a turn. It counts colours in their exact positions and colours present elsewhere in the secret. Because each colour is unique, nested loops can count misplaced colours without duplicate-bookkeeping arrays.
+## 8. Verification
 
-Feedback is appended to a guess-history table. Four exact matches win; eight unsuccessful valid guesses end the round. Both outcomes reveal the secret. New code cycles through three prepared codes.
+The original four-game version passed JavaScript syntax checks and a structural check covering thirteen HTML files, including six old-address compatibility pages. These checks predate Lights Out, Code Guess and Number Slide. It verified balanced tags, unique IDs, one main heading per page, local link and anchor targets, image alternative text, script assets and the existence of every named click handler.
 
-## 5. Save session behaviour
+Twenty-six automated scenario groups executed 264 handlers taken from the actual HTML against a simulated DOM. They covered all three Minesweeper layouts, independently calculated mine clues, wins, mine losses, flag limits, flag removal, protected flagged squares, empty-area expansion and layout cycling. Memory tests covered all three deals, exact pair counts, complete games, repeated-card clicks, mismatches, third-card blocking, manual hiding, new deals and best-turn updates.
 
-Each game has a round counter stored in its Save session button's value. Resetting or starting a new round increments that counter. The snapshot row ID combines the game and round number, such as saved-memory-2.
+Tic-tac-toe checks covered all eight winning lines, a draw, occupied-square rejection, end-of-round locking, O starting the next round and score reset. Dot checks now cover studying, early-click penalties, three-mistake losses, all three completed patterns, line visibility, reset and puzzle cycling. Those earlier source checks covered the original four game scripts only; the three restored game scripts were added afterwards.
 
-Saving first checks whether that row already exists. If it does not, a row is created. If it does, the row's cells are replaced with the current result. This avoids duplicates when Save session is clicked repeatedly. A later round receives another row, leaving earlier snapshots unchanged.
+The original four-game checks did not include browser visual review. For the current build, Edge loaded the three added games through localhost:8080. Lights Out solved in seven moves, Code Guess accepted and solved a code, and Number Slide moved, reset and reached its solved state. No page JavaScript errors appeared in these checks. The hosted deployment completed successfully.
 
-Records include the game, round number, state and relevant result: safe squares, pairs and turns, match score, path coverage and undos, lights and moves, sliding moves, or code guesses. Incomplete rounds can be saved. The Remove button deletes a record without changing the active board.
+Before presenting the project, open each game in the intended browser, play a full round, test its reset controls and check a narrow window. On Memory Match, verify the Turn cards over button after a mismatch. On Minesweeper, try both reveal and flag modes. Use the browser's print preview to check the manual score sheet.
 
-Snapshots store results, not a restorable copy of a past board. The current boards independently stay in memory when another game panel is shown. Saved results can be printed using the browser's Print command. No manual score entry or permanent storage is required.
+## 9. Explaining the code during the discussion
 
-## 6. Design and local delivery
+Start with a Tic-tac-toe button and follow its onclick attribute into placeMark. Explain how getElementById locates that button, textContent supplies its mark and disabled blocks another click. Follow the win check into ticLine and show how a Boolean return value informs the caller.
 
-The design uses warm paper colours, dark green controls, rust accents, system fonts and locally included illustrations. Playable boards appear before their rules. States such as covered, matched, selected and winning are visually distinct. Focus outlines, button labels and live status text describe changing controls.
+Next, show a while loop in resetMines or newMemoryDeal. The loop starts with an index, updates a button, increments the index and stops at the board size. This connects the approved DOM additions to the repetition taught in Chapter 7.
 
-CSS handles responsive sizing, percentage-positioned path squares, borders, shadows and a brief one-time brand animation. Print rules hide navigation and interactive controls. There are no continuous animations during games.
+For the coordinate calculations, internal Minesweeper index 14 is row 2 and column 2 when counting from zero: `parseInt(14 / 6)` gives 2, and `14 % 6` also gives 2. Comparing neighbouring coordinates explains the clues without needing a two-dimensional array.
 
-The local server serves the repository's dist folder at http://localhost:8080. Python 3 is used only as a static-file server; the website and game logic remain HTML, CSS and JavaScript. The included Windows launcher works relative to its own folder.
+Finish with a prohibited action, such as clicking a third memory card before hiding a mismatch. Show the early return that rejects it. Be clear about the boundaries: these are local mouse games, the layouts are prepared, there is no saved storage, and functions/click handlers/DOM updates were approved additions beyond the detailed supplied lessons.
 
-The website runs locally and requires no login or game service. The public Git repository contains the source and report; publishing repository contents does not create a hosted game service.
+## 10. References reviewed
 
-## 7. Verification
+- Project_description (1).docx: assignment requirements and GitHub submission expectation.
+- Web Programming Project Proposal.docx: puzzle arcade idea, proposed features and team.
+- Ch1_NEW.pdf: web architecture, browser scripting and static hosting.
+- ch2_NEW.pptx: HTML content, links, images, lists, tables and forms.
+- Ch3_book.pptx: HTML5 input types and constraints.
+- Ch4_CSS.pptx: stylesheet rules, selectors, fonts, positioning, box model and media types.
+- Ch5_CSS_advanced.pptx: shadows, backgrounds and animations.
+- Ch6_book_slides.pptx: introductory scripting, variables, input/output, arithmetic and comparisons.
+- Ch7_book_slides.pptx: decisions, loops, nested control statements and counters.
 
-All nine JavaScript files passed syntax checks. Seventeen HTML files passed checks for balanced tags, unique IDs, one main heading, local resources, link targets, image alternatives and valid click-handler names. The arcade has 239 named elements, including controls for all seven games and the session view.
-
-Thirty-seven scenario groups exercised 465 handlers from the actual HTML in a simulated DOM. Tests covered game wins/losses, resets, invalid/repeated moves, flag limits, memory mismatches, all eight Tic-tac-toe winning lines, draws and alternating starters. They also used independent mine-clue calculations and complete solutions for all three path puzzles.
-
-Lights Out tests verified the three solutions and corner-toggle behaviour. An independent breadth-first solver completed a sliding board; thirty scrambles were checked for unique tiles and solvability parity. Codebreaker tests checked misplaced/exact clues, invalid guesses, completion and eight-guess loss. Session tests checked saving all games, updating existing rows, preserving old snapshots across new rounds, removal, panel switching and empty state after a fresh load.
-
-The initial sliding scramble loop failed to terminate for some later deals during testing. It was replaced with a bounded arithmetic scramble and the full suite then passed. Source checks confirm no prompt/alert dialogs, arrays, timers or storage/network APIs in the runtime.
-
-Browser automation was unavailable in this session. The checks verify code, handler wiring and simulated DOM changes; they do not claim live desktop/mobile visual inspection. Local HTTP delivery is checked separately. Before presenting, play a round in the intended browser, save it, switch games, inspect the saved table and refresh to confirm the visible reset behaviour. Also check a narrow window and print preview.
-
-## 8. Explaining the project
-
-Start with a Tic-tac-toe button and follow its onclick call into placeMark. Explain how getElementById locates the button, textContent writes the mark and disabled prevents another move. Show the helper that checks a line and returns a Boolean result.
-
-Then explain a board-reset while loop and a coordinate calculation. For Minesweeper, index 14 corresponds to row 2 and column 2 when counting from zero. Division and remainder produce those coordinates without a two-dimensional array.
-
-For the harder path puzzle, show how the button value records visit order and how Undo locates the preceding value. For sessions, follow one Save session click into a generated table row, then save again to demonstrate updating that row rather than duplicating it.
-
-Be explicit about the boundary: variables, arithmetic and control flow come from the course foundation. Functions, events, DOM updates and hash-based panel switching are the agreed small extensions. The application uses no persistent storage, arrays, game engine or backend.
-
-## 9. References reviewed
-
-- Project_description (1).docx: assignment requirements and submission expectations.
-- Web Programming Project Proposal.docx: arcade concept, proposed functionality and team.
-- Ch1_NEW.pdf: web architecture, client-side scripting and hosting.
-- ch2_NEW.pptx and Ch3_book.pptx: HTML structure, content, controls and validation concepts.
-- Ch4_CSS.pptx and Ch5_CSS_advanced.pptx: styling, layout, box model, media rules, shadows and animation.
-- Ch6_book_slides.pptx and Ch7_book_slides.pptx: introductory scripting and control flow.
-
-The source course files are references, not website dependencies, and are not republished in the package.
+The original course documents are reference material, not website dependencies, and are not republished in the project package.

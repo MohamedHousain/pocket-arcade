@@ -108,7 +108,6 @@ function hideMemoryPair() {
 }
 
 function newMemoryDeal() {
-    beginSessionRound("memory");
     memoryDeal++;
     if (memoryDeal > 3) { memoryDeal = 1; }
     memoryFirst = -1;
