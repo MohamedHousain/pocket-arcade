@@ -50,11 +50,17 @@ function placeMark(index) {
         status.textContent = "Player " + ticPlayer + " wins! Start a new round to play again.";
         status.className = "game-status success";
         document.getElementById("ttt-turn").textContent = ticPlayer + " takes this round";
+        if (window.ArcadeProgress) {
+            window.ArcadeProgress.record({ game: "Tic-tac-toe", result: "Player " + ticPlayer + " won", outcome: "win", winner: ticPlayer });
+        }
     } else if (ticMoves == 9) {
         ticEnded = true;
         ticDraws++;
         status.textContent = "A draw. All nine squares are filled. Time for a rematch?";
         document.getElementById("ttt-turn").textContent = "Honours even";
+        if (window.ArcadeProgress) {
+            window.ArcadeProgress.record({ game: "Tic-tac-toe", result: "Draw", outcome: "draw" });
+        }
     }
     if (ticEnded) {
         var i = 1;

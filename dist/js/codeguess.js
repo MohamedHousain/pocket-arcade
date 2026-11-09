@@ -108,6 +108,14 @@ function submitGuess(event) {
     document.getElementById("code-turn").textContent = codeFinished ? codeAttempts : codeAttempts + 1;
     document.querySelector("#code-form .button").disabled = codeFinished;
     renderGuess();
+    if (codeFinished && window.ArcadeProgress) {
+        window.ArcadeProgress.record({
+            game: "Code Guess",
+            result: exact === 4 ? "Code cracked in " + codeAttempts + " attempts" : "Code not cracked in 6 attempts",
+            outcome: exact === 4 ? "win" : "loss",
+            metric: exact === 4 ? codeAttempts : undefined
+        });
+    }
 }
 
 function resetCode() {

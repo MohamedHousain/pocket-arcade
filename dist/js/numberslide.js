@@ -44,6 +44,9 @@ function moveSlide(index) {
     slideStatus.textContent = slideDone ? "Solved in " + slideMoves + (slideMoves == 1 ? " move." : " moves.") : "Choose a tile beside the empty square.";
     slideStatus.className = slideDone ? "game-status success" : "game-status";
     renderSlide();
+    if (slideDone && window.ArcadeProgress) {
+        window.ArcadeProgress.record({ game: "Number Slide", result: "Puzzle solved in " + slideMoves + " moves", outcome: "win", metric: slideMoves });
+    }
 }
 
 function newSlidePuzzle() {

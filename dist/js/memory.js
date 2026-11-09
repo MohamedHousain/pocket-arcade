@@ -83,6 +83,9 @@ function flipCard(index) {
         if (memoryPairs == 8) {
             if (memoryBest == 0 || memoryMoves < memoryBest) { memoryBest = memoryMoves; }
             memoryMessage("All eight pairs found in " + memoryMoves + " turns. Try another deal when you are ready.", "success");
+            if (window.ArcadeProgress) {
+                window.ArcadeProgress.record({ game: "Memory Match", result: "8 pairs in " + memoryMoves + " turns", outcome: "win", metric: memoryMoves });
+            }
         }
     } else {
         document.getElementById("memory-hide").disabled = false;

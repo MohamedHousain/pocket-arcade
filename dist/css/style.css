@@ -79,12 +79,22 @@ legend { padding: 0 8px; font-family: Georgia, serif; font-size: 24px; }
 .choice label { display: inline; margin-right: 16px; }
 input[type="submit"], input[type="reset"] { cursor: pointer; padding: 9px 16px; margin: 5px 8px 5px 0; }
 input[type="submit"] { background: #244e3f; color: white; }
+.score-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+#score-form input[type="text"], #score-form textarea { box-sizing: border-box; width: 100%; max-width: 540px; }
+.score-actions button { font: inherit; cursor: pointer; min-height: 44px; }
+.score-actions button:not(.button), .saved-scores button { background: #fffcf4; color: #244e3f; border: 1px solid #8f9e87; padding: 9px 16px; }
+.score-actions button:focus-visible, .saved-scores button:focus-visible { outline: 3px solid #aa482f; outline-offset: 3px; }
+.saved-scores { list-style: none; padding: 0; margin: 16px 0 32px; }
+.saved-scores li { border: 1px solid #aab7a0; padding: 16px 20px; margin: 12px 0; overflow-wrap: anywhere; }
+.saved-scores p { margin: 8px 0; }
+.saved-scores button { font: inherit; cursor: pointer; margin-top: 6px; }
 .spark { animation: welcome 1s ease 1; }
 @keyframes welcome { from { color: #d5b06b; } to { color: #ac482e; } }
 /* Media types are covered in Chapter 4. Print keeps rules and results readable. */
 @media print {
  body { background: white; color: black; font-size: 12pt; }
  .site-header, .site-footer, .button-line, .skip, .launch { display: none; }
+ .score-actions, .saved-scores button { display: none; }
  .wrap { width: 100%; max-width: none; }
  a { color: black; }
  .board td { border: 1px solid #666; }
@@ -128,6 +138,9 @@ input[type="submit"] { background: #244e3f; color: white; }
 .game-card h3 a { color: #243e35; text-decoration: none; }
 .game-card h3 a:hover { color: #a6412c; }
 .game-card-copy > p:not(.eyebrow) { max-width: 410px; min-height: 3.2em; margin: 8px 0 14px; color: #59665c; }
+.record-stamp { display: block; width: fit-content; margin: 0 0 12px; padding: 4px 10px; border: 1px solid #b9a96f; background: #f4ecd0; color: #4e472d; font-size: 12px; font-weight: bold; text-decoration: none; }
+.record-stamp:hover { border-color: #244e3f; color: #244e3f; background: #e9eddc; }
+.record-stamp.is-empty { border-color: #d2d6c8; background: #f1f1e8; color: #59665c; }
 .play-link { text-decoration: none; border-bottom: 1px solid #a64731; padding-bottom: 3px; }
 .play-link:hover { border-color: #244e3f; }
 .club-note { margin-top: 66px; padding: 35px 0 42px; border-top: 1px solid #c7c7b8; }
@@ -162,6 +175,7 @@ input[type="submit"] { background: #244e3f; color: white; }
  .footer-credit { display: block; margin: 2px 0 0; }
 }
 @media (prefers-reduced-motion: reduce) {
+ .spark { animation: none; }
  .game-card, .game-art img { transition: none; }
  .game-card:hover { transform: none; }
 }
@@ -171,7 +185,7 @@ input[type="submit"] { background: #244e3f; color: white; }
 .site-header .wrap, .home .site-header .wrap { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px 24px; }
 .site-header .brand { grid-column: 1; grid-row: 1; display: inline-block; line-height: 1.2; }
 .site-header .primary-nav, .home .site-header .primary-nav { grid-column: 2; grid-row: 1; display: flex; align-items: center; gap: 6px; margin: 0; text-align: right; line-height: 1.3; }
-.site-header .game-nav, .home .site-header .game-nav { grid-column: 1 / -1; grid-row: 2; display: flex; align-items: center; gap: 5px; overflow-x: auto; margin: 0; padding: 10px 8px 10px; border-top: 1px solid #deded0; text-align: left; white-space: nowrap; scrollbar-width: thin; }
+.site-header .game-nav, .home .site-header .game-nav { grid-column: 1 / -1; grid-row: 2; display: flex; align-items: center; flex-wrap: wrap; gap: 5px; margin: 0; padding: 10px 8px 10px; border-top: 1px solid #deded0; text-align: left; }
 .site-header nav a, .home .site-header nav a { display: inline-block; flex: none; margin: 0; padding: 7px 11px; border: 0; border-radius: 7px; color: #244e3f; font-size: 13px; font-weight: 600; line-height: 1.3; text-decoration: none; }
 .site-header nav a:focus { outline-offset: -3px; }
 .site-header nav a:hover, .home .site-header nav a:hover { color: #a6412c; background: #eae9dc; }
@@ -184,7 +198,7 @@ input[type="submit"] { background: #244e3f; color: white; }
  .site-header .wrap, .home .site-header .wrap { grid-template-columns: 1fr; gap: 8px; }
  .site-header .brand { grid-column: 1; grid-row: 1; }
  .site-header .primary-nav, .home .site-header .primary-nav { grid-column: 1; grid-row: 2; justify-content: space-between; }
- .site-header .game-nav, .home .site-header .game-nav { grid-column: 1; grid-row: 3; }
+ .site-header .game-nav, .home .site-header .game-nav { grid-column: 1; grid-row: 3; padding-left: 0; padding-right: 0; }
 }
 @media (max-width: 420px) {
  .site-header .wrap, .home .site-header .wrap { width: 94%; }

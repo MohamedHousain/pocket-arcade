@@ -25,6 +25,9 @@ function connectDot(number) {
             document.getElementById("dots-board-" + dotPuzzle).classList.remove("is-playing");
             document.getElementById("dots-hint").disabled = true;
             updateDotsDisplay("Three mistakes. Start again to try this pattern.");
+            if (window.ArcadeProgress) {
+                window.ArcadeProgress.record({ game: "Connect the Dots", result: Math.max(0, dotScore) + " points on puzzle " + dotPuzzle + " (three mistakes)", outcome: "loss", metric: Math.max(0, dotScore) });
+            }
         } else {
             updateDotsDisplay("Not that dot. " + (3 - dotMistakes) + " mistakes left.");
         }
@@ -50,6 +53,9 @@ function connectDot(number) {
         var closingLine = document.getElementById("closing-" + dotPuzzle);
         if (closingLine) { closingLine.style.display = "block"; }
         updateDotsDisplay("Pattern complete! You scored " + Math.max(0, dotScore) + " points.");
+        if (window.ArcadeProgress) {
+            window.ArcadeProgress.record({ game: "Connect the Dots", result: Math.max(0, dotScore) + " points on puzzle " + dotPuzzle, outcome: "win", metric: Math.max(0, dotScore) });
+        }
     } else {
         document.getElementById("dots-hint").disabled = false;
         updateDotsDisplay("Good. Find dot " + dotNext + " from memory.");

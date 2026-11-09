@@ -105,6 +105,13 @@ function finishMines(won, hit) {
     }
     if (won) { showMineStatus("Board cleared! You found all 30 safe squares. Try the next layout.", "success"); }
     else { showMineStatus("A mine ended this round. You opened " + mineSafe + " of 30 safe squares. Try again when you are ready.", "error"); }
+    if (window.ArcadeProgress) {
+        window.ArcadeProgress.record({
+            game: "Minesweeper",
+            result: won ? "Cleared layout " + mineLayout : "Hit a mine on layout " + mineLayout + " after " + mineSafe + " safe squares",
+            outcome: won ? "win" : "loss"
+        });
+    }
 }
 
 function chooseMine(index) {

@@ -4,7 +4,7 @@ Web Programming course project, University of Sharjah, Fall 2026–2027.
 
 Pocket Arcade contains seven games playable directly on their webpages: Minesweeper, Memory Match, Tic-tac-toe, Connect the Dots, Lights Out, Code Guess and Number Slide. The site uses plain HTML, CSS and browser JavaScript, with no libraries or frameworks. HTML supplies the controls and content, CSS formats the boards, and plain JavaScript applies the game rules. There are no external libraries or frameworks.
 
-This report describes the current static build. The previous browser-dialog games have been replaced. The user approved a limited extension beyond the supplied slides: small functions, click handlers and updates to page elements. These additions are identified explicitly below rather than described as techniques fully taught in the source material.
+This report describes the current local static build. The previous browser-dialog games have been replaced. The user approved a limited extension beyond the supplied slides: small functions, click handlers and updates to page elements. The later progress features also use browser local storage and CSS animation. These additions are identified explicitly below rather than described as techniques fully taught in the source material.
 
 ## 1. Requirements and scope
 
@@ -13,15 +13,15 @@ The project description supplied the assignment requirements. The proposal suppl
 | Requirement | Current implementation |
 | --- | --- |
 | At least five linked webpages | Ten main pages: home, seven games, score sheet and about |
-| Frontend technologies only | HTML, two CSS files, seven JavaScript files and local PNG images |
+| Frontend technologies only | HTML, two CSS files, nine JavaScript files and local PNG images |
 | Multimedia | Original game illustrations and a brief CSS colour animation |
 | Consistent CSS formatting | Shared navigation, colours, typography, rules and board presentation |
 | JavaScript interaction | Clickable game controls, changing boards, scores and results |
 | Input verification | Illegal moves and repeated actions are rejected; completed games stop accepting moves |
 | A collection of puzzles | Minesweeper, Memory Match, Tic-tac-toe, Connect the Dots, Lights Out, Code Guess and Number Slide |
-| Performance tracking | Round scores, a page-local memory best, a Tic-tac-toe match tally and a printable manual sheet |
+| Performance tracking | Automatic completed-round records, home page record stamps, a page-local memory best, a Tic-tac-toe match tally and a manual score entry form |
 | Local access | http://localhost:8080, with no ChatGPT login or game service |
-| GitHub progress uploads | Ready for a static upload; no upload performed because no destination repository was supplied |
+| GitHub progress uploads | A source repository exists; the newest local changes have not been published |
 
 The proposal's Snake and extra number puzzle were replaced with Memory Match and Tic-tac-toe. This removes the need for keyboard controls or real-time movement. Persistent profiles and daily puzzles are outside the agreed minimal scope. Images and CSS animation supply visual media; there is no audio or video player. If the instructor requires a specific media format, that requirement should be confirmed separately.
 
@@ -37,10 +37,10 @@ The proposal's Snake and extra number puzzle were replaced with Memory Match and
 | lightsout.html | Five by five board; each move toggles a cross of lights |
 | codeguess.html | Four-colour code, six attempts and exact/misplaced clues |
 | numberslide.html | Solvable four by four sliding tile board |
-| scorecard.html | Manual worksheet that can be printed using the browser |
+| scorecard.html | Automatically saved completed rounds, optional manual entries and browser printing |
 | about.html | Project description, limitations and proposal team |
 
-Six former page addresses remain as simple compatibility pages linking to the new games. They no longer run the earlier prompt scripts. The runtime game scripts are minesweeper.js, memory.js, tictactoe.js, dots.js, lightsout.js, codeguess.js and numberslide.js. Shared presentation is in css/style.css; the game controls and small-screen adjustments are in css/games.css.
+Six former page addresses remain as simple compatibility pages linking to the new games. They no longer run the earlier prompt scripts. The seven game scripts are minesweeper.js, memory.js, tictactoe.js, dots.js, lightsout.js, codeguess.js and numberslide.js. arcade-progress.js saves completed rounds, updates home page records and starts the win effect; scorecard.js manages the score sheet. Shared presentation is in css/style.css; the game controls and small-screen adjustments are in css/games.css.
 
 Each playable page loads its script after the HTML controls have been declared. This means the elements already exist when the script looks them up. There is no build system, dependency installation or import step for the website.
 
@@ -139,17 +139,17 @@ Input verification means checking whether the selected action is allowed. Minesw
 
 Messages appear beside the board, never in alert or prompt dialogs. The scripts use fixed text, symbols and calculated numbers. textContent updates the display as text, rather than interpreting it as HTML.
 
-No data is stored or transmitted. Memory Match's best and Tic-tac-toe's tallies exist only in ordinary JavaScript variables. Navigation or reloading clears them. The score sheet is a manual form with no submit button or backend; it can be printed for a lasting record.
+Game scores are not transmitted. Memory Match's on-page best and Tic-tac-toe's match tally exist only in ordinary JavaScript variables; navigation or reloading clears those displays and any unfinished board. Completed rounds are automatically saved in this browser's local storage and shown on the score sheet. The home page shows each game's best score, saved Minesweeper wins or separate Tic-tac-toe X wins, O wins and draws. The score sheet also stores manually entered rounds. Saved rounds remain after a reload and can be deleted or printed; they do not sync across devices.
 
 ## 7. Design and hosting
 
 The design retains warm paper colours, dark green controls, rust accents, serif headings and simple game illustrations. Playable boards now appear near the top of each game page, followed by short instructions. A visitor can start playing immediately without navigating to a separate result page.
 
-The site uses locally included PNG images and system fonts. CSS handles the board sizes, button states, connecting lines and narrow-window adjustments. A short brand animation runs once, and there are no continuous animations during play. Print styles remove interactive controls.
+The site uses locally included PNG images and system fonts. CSS handles the board sizes, button states, connecting lines and narrow-window adjustments. A short brand animation runs once and a brief confetti effect follows a win. Reduced motion settings disable both animations. Print styles remove interactive controls.
 
 The local server serves the dist directory at http://localhost:8080. The included launcher uses the existing Python installation only to deliver static files. No Python code runs in the site, and there is no application backend. The same files can also be opened directly with dist/index.html.
 
-The static site is published at https://pocket-arcade-course-2026.equalmonkey.chatgpt.site with its existing access settings. The local files also run without that platform. The separate GitHub requirement remains outstanding because no repository destination was supplied.
+A prior static build is published at https://pocket-arcade-course-2026.equalmonkey.chatgpt.site. The newest local changes have not been published. The project source is maintained at https://github.com/mohamedhousain/pocket-arcade.
 
 ## 8. Verification
 
@@ -161,7 +161,9 @@ Tic-tac-toe checks covered all eight winning lines, a draw, occupied-square reje
 
 The original four-game checks did not include browser visual review. For the current build, Edge loaded the three added games through localhost:8080. Lights Out solved in seven moves, Code Guess accepted and solved a code, and Number Slide moved, reset and reached its solved state. No page JavaScript errors appeared in these checks. The hosted deployment completed successfully.
 
-Before presenting the project, open each game in the intended browser, play a full round, test its reset controls and check a narrow window. On Memory Match, verify the Turn cards over button after a mismatch. On Minesweeper, try both reveal and flag modes. Use the browser's print preview to check the manual score sheet.
+The current local build was also checked in Edge at desktop and phone widths. All main pages and compatibility pages loaded without missing images or page JavaScript errors. Eleven game outcomes across the seven games were checked for automatic score sheet entries, and their home page records updated. Reduced motion disabled the win animation.
+
+Before presenting the project, open each game in the intended browser, play a full round, test its reset controls and check a narrow window. On Memory Match, verify the Turn cards over button after a mismatch. On Minesweeper, try both reveal and flag modes. Finish a game, check its automatic entry on the score sheet and its record on the home page, then reload to confirm the entry remains. Use the browser's print preview for the score sheet.
 
 ## 9. Explaining the code during the discussion
 
@@ -171,7 +173,7 @@ Next, show a while loop in resetMines or newMemoryDeal. The loop starts with an 
 
 For the coordinate calculations, internal Minesweeper index 14 is row 2 and column 2 when counting from zero: `parseInt(14 / 6)` gives 2, and `14 % 6` also gives 2. Comparing neighbouring coordinates explains the clues without needing a two-dimensional array.
 
-Finish with a prohibited action, such as clicking a third memory card before hiding a mismatch. Show the early return that rejects it. Be clear about the boundaries: these are local mouse games, the layouts are prepared, there is no saved storage, and functions/click handlers/DOM updates were approved additions beyond the detailed supplied lessons.
+Finish with a prohibited action, such as clicking a third memory card before hiding a mismatch. Show the early return that rejects it. Be clear about the boundaries: these are local mouse games, the layouts are prepared, unfinished game progress resets on reload, and completed rounds are saved only in this browser.
 
 ## 10. References reviewed
 

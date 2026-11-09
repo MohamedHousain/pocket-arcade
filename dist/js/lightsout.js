@@ -38,6 +38,9 @@ function changeLights(index) {
     lightsStatus.textContent = lightsDone ? "" : "Keep going. Each move flips a cross of lights.";
     lightsStatus.className = "game-status";
     drawLights();
+    if (lightsDone && window.ArcadeProgress) {
+        window.ArcadeProgress.record({ game: "Lights Out", result: "All lights off in " + lightsMoves + " moves", outcome: "win", metric: lightsMoves });
+    }
 }
 
 function resetLights() {
