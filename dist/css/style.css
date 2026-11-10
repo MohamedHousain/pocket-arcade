@@ -125,7 +125,6 @@ input[type="submit"] { background: #244e3f; color: white; }
 .section-top h2 { margin: 8px 0 0; }
 .section-top > p { margin: 0 0 5px; color: #59665c; }
 .game-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
-@media (min-width: 761px) { .game-card:last-child { grid-column: 1 / -1; width: calc(50% - 12px); justify-self: center; } }
 .game-card { overflow: hidden; background: #fbf9f1; border: 1px solid #dedbcf; transition: transform .2s ease, box-shadow .2s ease; }
 .game-card:hover { transform: translateY(-4px); box-shadow: 0 12px 26px #243e3517; }
 .game-art { display: block; overflow: hidden; background: #e9eadc; }
@@ -180,7 +179,7 @@ input[type="submit"] { background: #244e3f; color: white; }
  .game-card:hover { transform: none; }
 }
 
-/* A small utility row and a dedicated strip for all seven games. */
+/* A small utility row and a dedicated strip for all six games. */
 .site-header { padding: 16px 0 9px; background: #f6f3e9; border-bottom: 1px solid #d7d7c7; }
 .site-header .wrap, .home .site-header .wrap { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px 24px; }
 .site-header .brand { grid-column: 1; grid-row: 1; display: inline-block; line-height: 1.2; }

@@ -2,7 +2,7 @@
 
 Web Programming course project, University of Sharjah, Fall 2026–2027.
 
-Pocket Arcade contains seven games playable directly on their webpages: Minesweeper, Memory Match, Tic-tac-toe, Connect the Dots, Lights Out, Code Guess and Number Slide. The site uses plain HTML, CSS and browser JavaScript, with no libraries or frameworks. HTML supplies the controls and content, CSS formats the boards, and plain JavaScript applies the game rules. There are no external libraries or frameworks.
+Pocket Arcade contains six games playable directly on their webpages: Minesweeper, Memory Match, Connect the Dots, Lights Out, Code Guess and Number Slide. The site uses plain HTML, CSS and browser JavaScript, with no libraries or frameworks. HTML supplies the controls and content, CSS formats the boards, and plain JavaScript applies the game rules. There are no external libraries or frameworks.
 
 This report describes the current local static build. The previous browser-dialog games have been replaced. The user approved a limited extension beyond the supplied slides: small functions, click handlers and updates to page elements. The later progress features also use browser local storage and CSS animation. These additions are identified explicitly below rather than described as techniques fully taught in the source material.
 
@@ -12,18 +12,18 @@ The project description supplied the assignment requirements. The proposal suppl
 
 | Requirement | Current implementation |
 | --- | --- |
-| At least five linked webpages | Ten main pages: home, seven games, score sheet and about |
-| Frontend technologies only | HTML, two CSS files, nine JavaScript files and local PNG images |
+| At least five linked webpages | Nine main pages: home, six games, score sheet and about |
+| Frontend technologies only | HTML, two CSS files, eight JavaScript files and local PNG images |
 | Multimedia | Original game illustrations and a brief CSS colour animation |
 | Consistent CSS formatting | Shared navigation, colours, typography, rules and board presentation |
 | JavaScript interaction | Clickable game controls, changing boards, scores and results |
 | Input verification | Illegal moves and repeated actions are rejected; completed games stop accepting moves |
-| A collection of puzzles | Minesweeper, Memory Match, Tic-tac-toe, Connect the Dots, Lights Out, Code Guess and Number Slide |
-| Performance tracking | Automatic completed-round records, home page record stamps, a page-local memory best, a Tic-tac-toe match tally and a manual score entry form |
+| A collection of puzzles | Minesweeper, Memory Match, Connect the Dots, Lights Out, Code Guess and Number Slide |
+| Performance tracking | Automatic completed-round records, home page record stamps, a page-local memory best and a manual score entry form |
 | Local access | http://localhost:8080, with no ChatGPT login or game service |
 | GitHub progress uploads | A source repository exists; the newest local changes have not been published |
 
-The proposal's Snake and extra number puzzle were replaced with Memory Match and Tic-tac-toe. This removes the need for keyboard controls or real-time movement. Persistent profiles and daily puzzles are outside the agreed minimal scope. Images and CSS animation supply visual media; there is no audio or video player. If the instructor requires a specific media format, that requirement should be confirmed separately.
+The game selection uses mouse and tap controls without real-time movement. Persistent profiles and daily puzzles are outside the agreed minimal scope. Images and CSS animation supply visual media; there is no audio or video player. If the instructor requires a specific media format, that requirement should be confirmed separately.
 
 ## 2. Files and navigation
 
@@ -32,7 +32,6 @@ The proposal's Snake and extra number puzzle were replaced with Memory Match and
 | index.html | Introduces the collection and links directly to each playable board |
 | minesweeper.html | Six by six board, reveal/flag controls, status and restart buttons |
 | memory.html | Sixteen clickable cards, turn counter and manual flip-back control |
-| tictactoe.html | Nine squares for two players sharing the screen, with match scores |
 | dots.html | Twelve-dot memory challenge, connecting lines and three patterns |
 | lightsout.html | Five by five board; each move toggles a cross of lights |
 | codeguess.html | Four-colour code, six attempts and exact/misplaced clues |
@@ -40,7 +39,7 @@ The proposal's Snake and extra number puzzle were replaced with Memory Match and
 | scorecard.html | Automatically saved completed rounds, optional manual entries and browser printing |
 | about.html | Project description, limitations and proposal team |
 
-Six former page addresses remain as simple compatibility pages linking to the new games. They no longer run the earlier prompt scripts. The seven game scripts are minesweeper.js, memory.js, tictactoe.js, dots.js, lightsout.js, codeguess.js and numberslide.js. arcade-progress.js saves completed rounds, updates home page records and starts the win effect; scorecard.js manages the score sheet. Shared presentation is in css/style.css; the game controls and small-screen adjustments are in css/games.css.
+Six former page addresses remain as simple compatibility pages linking to the new games. They no longer run the earlier prompt scripts. The six game scripts are minesweeper.js, memory.js, dots.js, lightsout.js, codeguess.js and numberslide.js. arcade-progress.js saves completed rounds, updates home page records and starts the win effect; scorecard.js manages the score sheet. Shared presentation is in css/style.css; the game controls and small-screen adjustments are in css/games.css.
 
 Each playable page loads its script after the HTML controls have been declared. This means the elements already exist when the script looks them up. There is no build system, dependency installation or import step for the website.
 
@@ -69,7 +68,7 @@ The function bodies still use the course's variables, arithmetic, decisions and 
 
 ### Click handlers
 
-An HTML button calls a named function through its onclick attribute. For example, a Tic-tac-toe square uses `onclick="placeMark(1)"`. When the visitor clicks the square, the browser runs placeMark with the square number 1.
+An HTML button calls a named function through its onclick attribute. For example, a Minesweeper square uses `onclick="chooseMine(1)"` to call its click handler with the square number 1.
 
 The original board pages use onclick handlers. Lights Out, Code Guess and Number Slide use native addEventListener handlers and ordinary buttons. A mouse or tap is sufficient; there is no typing, dragging, right-click requirement or keyboard game control. Native buttons also retain normal browser accessibility behaviour.
 
@@ -89,7 +88,7 @@ The browser's document object represents the page. `document.getElementById("mem
 
 These are small DOM updates, not a framework. The original game boards are written in the HTML. The three restored games create their buttons with document.createElement and clear their board containers between moves. No page imports or fetches external content.
 
-Combined conditions use the logical operators && (both conditions), || (either condition) and ! (not). These are shorthand for combining the Boolean decisions used in the course; they should also be explained during the project discussion. For example, a click is ignored if the game has ended OR the square already contains a mark.
+Combined conditions use the logical operators && (both conditions), || (either condition) and ! (not). These are shorthand for combining the Boolean decisions used in the course; they should also be explained during the project discussion. For example, a click is ignored if a round has ended OR a square is already open.
 
 Additional presentation details include responsive screen-width media queries, visible focus outlines, disabled/selected control styling and circular dot buttons. Accessible labels and live status messages help describe changing boards. These supporting details are not claimed as exact copies of lecture examples.
 
@@ -117,14 +116,6 @@ There is deliberately no timer. Clicking the same card twice does not count as a
 
 The New deal button cycles through three deterministic arrangements. Arithmetic maps the card position to one of sixteen prepared positions using `(index * 5 + memoryDeal * 3) % 16`. The mapping visits every position once in each deal. A sequence of if statements then assigns the eight pairs, each appearing twice. No random-number generator or array is required.
 
-### Tic-tac-toe
-
-This game has two human players sharing one screen. Each button's textContent is either empty, X or O, so the displayed board also stores its state. A valid click writes the current player's mark and disables that square.
-
-The ticLine helper compares three specified squares with the current player's mark. The main handler checks the three rows, three columns and two diagonals. A completed line is highlighted and the winning player's score increases once. If nine moves finish without a line, the draw counter increases instead. The remaining buttons are disabled after the round ends.
-
-New round clears the board, retains match scores and alternates the starting player. Reset scores clears the match and returns to X starting. The script ignores occupied-square clicks and clicks after the round has ended. There is no computer opponent or online multiplayer service.
-
 ### Connect the Dots
 
 Each pattern has twelve HTML buttons placed at prepared CSS percentage coordinates. The player studies their numbers, then hides them before playing. The dot numbers remain in accessible button labels. Correct clicks reveal the connecting CSS line segments and advance the sequence.
@@ -135,11 +126,11 @@ Three scattered layouts give different patterns. Start again reveals the numbers
 
 ## 6. Validation and progress
 
-Input verification means checking whether the selected action is allowed. Minesweeper checks square state and available flags. Memory Match checks whether a first card is already selected and whether a mismatched pair still needs hiding. Tic-tac-toe checks whether a square is empty and whether play has ended. Connect the Dots checks the expected number. These checks are present in the functions as well as in disabled buttons.
+Input verification means checking whether the selected action is allowed. Minesweeper checks square state and available flags. Memory Match checks whether a first card is already selected and whether a mismatched pair still needs hiding. Connect the Dots checks the expected number. These checks are present in the functions as well as in disabled buttons.
 
 Messages appear beside the board, never in alert or prompt dialogs. The scripts use fixed text, symbols and calculated numbers. textContent updates the display as text, rather than interpreting it as HTML.
 
-Game scores are not transmitted. Memory Match's on-page best and Tic-tac-toe's match tally exist only in ordinary JavaScript variables; navigation or reloading clears those displays and any unfinished board. Completed rounds are automatically saved in this browser's local storage and shown on the score sheet. The home page shows each game's best score, saved Minesweeper wins or separate Tic-tac-toe X wins, O wins and draws. The score sheet also stores manually entered rounds. Saved rounds remain after a reload and can be deleted or printed; they do not sync across devices.
+Game scores are not transmitted. Memory Match's on-page best exists only in an ordinary JavaScript variable; navigation or reloading clears that display and any unfinished board. Completed rounds are automatically saved in this browser's local storage and shown on the score sheet. The home page shows each game's best score or saved Minesweeper wins. The score sheet also stores manually entered rounds. Saved rounds remain after a reload and can be deleted or printed; they do not sync across devices. Entries for removed games are cleared when the site loads.
 
 ## 7. Design and hosting
 
@@ -153,21 +144,21 @@ A prior static build is published at https://pocket-arcade-course-2026.equalmonk
 
 ## 8. Verification
 
-The original four-game version passed JavaScript syntax checks and a structural check covering thirteen HTML files, including six old-address compatibility pages. These checks predate Lights Out, Code Guess and Number Slide. It verified balanced tags, unique IDs, one main heading per page, local link and anchor targets, image alternative text, script assets and the existence of every named click handler.
+An earlier version passed JavaScript syntax checks and a structural check covering thirteen HTML files, including six old-address compatibility pages. These checks predate Lights Out, Code Guess and Number Slide and are not a verification of this revision. They verified balanced tags, unique IDs, one main heading per page, local link and anchor targets, image alternative text, script assets and the existence of every named click handler.
 
 Twenty-six automated scenario groups executed 264 handlers taken from the actual HTML against a simulated DOM. They covered all three Minesweeper layouts, independently calculated mine clues, wins, mine losses, flag limits, flag removal, protected flagged squares, empty-area expansion and layout cycling. Memory tests covered all three deals, exact pair counts, complete games, repeated-card clicks, mismatches, third-card blocking, manual hiding, new deals and best-turn updates.
 
-Tic-tac-toe checks covered all eight winning lines, a draw, occupied-square rejection, end-of-round locking, O starting the next round and score reset. Dot checks now cover studying, early-click penalties, three-mistake losses, all three completed patterns, line visibility, reset and puzzle cycling. Those earlier source checks covered the original four game scripts only; the three restored game scripts were added afterwards.
+Earlier source checks covered Minesweeper, Memory Match and Connect the Dots. The three added game scripts were reviewed afterwards.
 
-The original four-game checks did not include browser visual review. For the current build, Edge loaded the three added games through localhost:8080. Lights Out solved in seven moves, Code Guess accepted and solved a code, and Number Slide moved, reset and reached its solved state. No page JavaScript errors appeared in these checks. The hosted deployment completed successfully.
+The earlier source checks did not include browser visual review. For the earlier build, Edge loaded the three added games through localhost:8080. Lights Out solved in seven moves, Code Guess accepted and solved a code, and Number Slide moved, reset and reached its solved state. No page JavaScript errors appeared in these checks. The hosted deployment completed successfully.
 
-The current local build was also checked in Edge at desktop and phone widths. All main pages and compatibility pages loaded without missing images or page JavaScript errors. Eleven game outcomes across the seven games were checked for automatic score sheet entries, and their home page records updated. Reduced motion disabled the win animation.
+Before this six-game revision, the local build was checked in Edge at desktop and phone widths. All main pages and compatibility pages loaded without missing images or page JavaScript errors. Game outcomes across the earlier build were checked for automatic score sheet entries, and their home page records updated. Reduced motion disabled the win animation.
 
 Before presenting the project, open each game in the intended browser, play a full round, test its reset controls and check a narrow window. On Memory Match, verify the Turn cards over button after a mismatch. On Minesweeper, try both reveal and flag modes. Finish a game, check its automatic entry on the score sheet and its record on the home page, then reload to confirm the entry remains. Use the browser's print preview for the score sheet.
 
 ## 9. Explaining the code during the discussion
 
-Start with a Tic-tac-toe button and follow its onclick attribute into placeMark. Explain how getElementById locates that button, textContent supplies its mark and disabled blocks another click. Follow the win check into ticLine and show how a Boolean return value informs the caller.
+Start with a Minesweeper square and follow its onclick attribute into chooseMine. Explain how getElementById locates the button, textContent supplies its clue and disabled blocks another click. Follow the isMine check to show how a Boolean result informs the caller.
 
 Next, show a while loop in resetMines or newMemoryDeal. The loop starts with an index, updates a button, increments the index and stops at the board size. This connects the approved DOM additions to the repetition taught in Chapter 7.
 

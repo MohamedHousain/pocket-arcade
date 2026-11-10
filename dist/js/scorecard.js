@@ -19,8 +19,9 @@ function loadScores() {
     try {
         const stored = JSON.parse(localStorage.getItem(scoreStorageKey) || "[]");
         scores = Array.isArray(stored) ? stored.filter(function (score) {
-            return score && typeof score === "object" && typeof score.game === "string" && typeof score.result === "string";
+            return score && typeof score === "object" && window.ArcadeProgress.isSupportedGame(score.game) && typeof score.result === "string";
         }) : [];
+        if (Array.isArray(stored) && scores.length !== stored.length) localStorage.setItem(scoreStorageKey, JSON.stringify(scores));
     } catch (error) {
         scores = [];
         showStorageError();
@@ -49,9 +50,8 @@ function renderScores() {
         item.appendChild(title);
 
         const details = document.createElement("p");
-        const winner = score.game === "Tic-tac-toe" && window.ArcadeProgress ? window.ArcadeProgress.ticWinner(score) : null;
         details.textContent = score.source === "game" ?
-            score.day + " · Automatically saved · " + (winner ? winner + " win" : score.outcome === "win" ? "Win" : score.outcome === "loss" ? "Loss" : "Draw") :
+            score.day + " · Automatically saved · " + (score.outcome === "win" ? "Win" : score.outcome === "loss" ? "Loss" : "Completed") :
             score.day + " · " + (score.player || "Unnamed player") + " · Rating: " + score.rating + "/5";
         item.appendChild(details);
 

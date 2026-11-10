@@ -1,5 +1,6 @@
 (function () {
     const storageKey = "pocket-arcade-scores";
+    const supportedGames = ["Minesweeper", "Memory Match", "Connect the Dots", "Lights Out", "Code Guess", "Number Slide"];
     const recordTypes = {
         "Memory Match": { direction: "low", unit: "turns" },
         "Connect the Dots": { direction: "high", unit: "points" },
@@ -11,9 +12,14 @@
     function readScores() {
         try {
             const saved = JSON.parse(localStorage.getItem(storageKey) || "[]");
-            return Array.isArray(saved) ? saved.filter(function (score) {
-                return score && typeof score === "object" && typeof score.game === "string" && typeof score.result === "string";
-            }) : [];
+            if (!Array.isArray(saved)) return [];
+            const supported = saved.filter(function (score) {
+                return score && typeof score === "object" && supportedGames.includes(score.game) && typeof score.result === "string";
+            });
+            if (supported.length !== saved.length) {
+                try { localStorage.setItem(storageKey, JSON.stringify(supported)); } catch (error) { /* Keep readable scores available. */ }
+            }
+            return supported;
         } catch (error) {
             return [];
         }
@@ -25,22 +31,8 @@
         return localDate.toISOString().slice(0, 10);
     }
 
-    function ticWinner(score) {
-        if (score.winner === "X" || score.winner === "O") return score.winner;
-        if (score.result === "Player X won") return "X";
-        if (score.result === "Player O won") return "O";
-        return null;
-    }
-
     function bestFor(game, scores) {
         const rounds = scores.filter(function (score) { return score.source === "game" && score.game === game; });
-        if (game === "Tic-tac-toe") {
-            if (!rounds.length) return null;
-            const x = rounds.filter(function (score) { return ticWinner(score) === "X"; }).length;
-            const o = rounds.filter(function (score) { return ticWinner(score) === "O"; }).length;
-            const draws = rounds.filter(function (score) { return score.outcome === "draw"; }).length;
-            return { value: rounds.length, label: "X " + x + " · O " + o + " · Draws " + draws };
-        }
         const type = recordTypes[game];
         if (type) {
             const values = rounds.filter(function (score) {
@@ -89,7 +81,6 @@
             outcome: round.outcome
         };
         if (typeof round.metric === "number" && Number.isFinite(round.metric)) entry.metric = round.metric;
-        if (round.winner === "X" || round.winner === "O") entry.winner = round.winner;
 
         let saved = false;
         try {
@@ -100,7 +91,7 @@
         }
 
         const after = saved ? bestFor(round.game, [entry].concat(previous)) : before;
-        const improved = saved && round.game !== "Tic-tac-toe" && after &&
+        const improved = saved && after &&
             (!before || (recordTypes[round.game] && after.value !== before.value));
         const status = document.querySelector(".game-shell .game-status");
         if (status) {
@@ -119,7 +110,7 @@
         return saved;
     }
 
-    window.ArcadeProgress = { record: recordRound, read: readScores, bestFor: bestFor, ticWinner: ticWinner };
+    window.ArcadeProgress = { record: recordRound, read: readScores, bestFor: bestFor, isSupportedGame: function (game) { return supportedGames.includes(game); } };
     if (document.querySelector(".game-card")) {
         showHomeRecords();
         window.addEventListener("pageshow", showHomeRecords);
