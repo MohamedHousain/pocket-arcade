@@ -19,7 +19,7 @@ You can also open `dist/index.html` directly in a browser. Use the local server 
 - `dist/numberslide.html`: a solvable four by four sliding tile puzzle.
 - `dist/scorecard.html`: automatically saved game results and optional manual entries.
 - `dist/about.html`: project and team information.
-- `dist/css/style.css` and `games.css`: shared appearance and game boards.
+- `dist/css/style.css`, `games.css`, and `theme.css`: shared layout, game boards, and arcade visual style.
 - `dist/js/`: six game scripts, the score sheet script, and shared progress code.
 - `dist/assets/`: local PNG illustrations.
 - `reports/project-report.html`: readable, printable explanation of the project.
