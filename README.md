@@ -13,7 +13,7 @@ You can also open `dist/index.html` directly in a browser. Use the local server 
 - `dist/index.html`: games collection.
 - `dist/minesweeper.html`: clickable 6 by 6 board, flags and three practice layouts.
 - `dist/memory.html`: sixteen cards, eight pairs, three deals and a best-turn counter.
-- `dist/dots.html`: a twelve-dot memory challenge with three patterns and three allowed mistakes.
+- `dist/dots.html`: a twelve-dot memory challenge with three patterns, five allowed mistakes, and free hints.
 - `dist/lightsout.html`: a five by five switch puzzle.
 - `dist/codeguess.html`: a four-colour code puzzle with six attempts.
 - `dist/numberslide.html`: a solvable four by four sliding tile puzzle.

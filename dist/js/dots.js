@@ -20,16 +20,16 @@ function connectDot(number) {
     if (number > dotNext) {
         dotMistakes++;
         dotScore -= 5;
-        if (dotMistakes === 3) {
+        if (dotMistakes === 5) {
             dotFinished = true;
             document.getElementById("dots-board-" + dotPuzzle).classList.remove("is-playing");
             document.getElementById("dots-hint").disabled = true;
-            updateDotsDisplay("Three mistakes. Start again to try this pattern.");
+            updateDotsDisplay("Five mistakes. Start again to try this pattern.");
             if (window.ArcadeProgress) {
-                window.ArcadeProgress.record({ game: "Connect the Dots", result: Math.max(0, dotScore) + " points on puzzle " + dotPuzzle + " (three mistakes)", outcome: "loss", metric: Math.max(0, dotScore) });
+                window.ArcadeProgress.record({ game: "Connect the Dots", result: Math.max(0, dotScore) + " points on puzzle " + dotPuzzle + " (five mistakes)", outcome: "loss", metric: Math.max(0, dotScore) });
             }
         } else {
-            updateDotsDisplay("Not that dot. " + (3 - dotMistakes) + " mistakes left.");
+            updateDotsDisplay("Not that dot. " + (5 - dotMistakes) + " mistakes left. Use a free hint if you need one.");
         }
         return;
     }
@@ -66,20 +66,19 @@ function startDots() {
     if (dotStarted || dotFinished) { return; }
     dotStarted = true;
     document.getElementById("dots-board-" + dotPuzzle).classList.add("is-playing");
-    document.getElementById("dot-" + dotPuzzle + "-1").classList.remove("next-dot");
+    document.getElementById("dot-" + dotPuzzle + "-1").classList.add("next-dot");
     document.getElementById("dots-start").disabled = true;
     document.getElementById("dots-hint").disabled = false;
-    updateDotsDisplay("Find dot 1. You can make two mistakes.");
+    updateDotsDisplay("Dot 1 is outlined. You can make five mistakes and use free hints.");
 }
 
 function showDotHint() {
     if (!dotStarted || dotFinished) { return; }
     var button = document.getElementById("dot-" + dotPuzzle + "-" + dotNext);
     if (button.classList.contains("next-dot")) { return; }
-    dotScore -= 10;
     button.classList.add("next-dot");
     document.getElementById("dots-hint").disabled = true;
-    updateDotsDisplay("Dot " + dotNext + " is outlined. Hint costs 10 points.");
+    updateDotsDisplay("Dot " + dotNext + " is outlined. Hints are free.");
 }
 
 function resetDots() {

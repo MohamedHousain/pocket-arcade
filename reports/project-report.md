@@ -120,7 +120,7 @@ The New deal button cycles through three deterministic arrangements. Arithmetic 
 
 Each pattern has twelve HTML buttons placed at prepared CSS percentage coordinates. The player studies their numbers, then hides them before playing. The dot numbers remain in accessible button labels. Correct clicks reveal the connecting CSS line segments and advance the sequence.
 
-A wrong later dot counts as a mistake and costs five points. Three mistakes end the round. An optional hint outlines the next dot for a ten-point penalty. Connected dots are disabled. Each correct dot earns ten points, so the maximum is 120; the score never drops below zero.
+A wrong later dot counts as a mistake and costs five points. Five mistakes end the round. Dot 1 starts outlined, and an optional free hint outlines the next dot. Connected dots are disabled. Each correct dot earns ten points, so the maximum is 120; the score never drops below zero.
 
 Three scattered layouts give different patterns. Start again reveals the numbers and clears the current round; Next puzzle cycles to another layout. The game uses ordinary buttons, CSS lines and browser JavaScript, without canvas or a drawing library.
 
