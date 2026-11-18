@@ -22,11 +22,8 @@ h2 { letter-spacing:-.05em; }
 .home .hero { display:grid; grid-template-columns:minmax(0,1fr) minmax(320px,.85fr); align-items:center; gap:clamp(28px,5vw,80px); max-width:1160px; min-height:590px; padding:68px 0 80px; text-align:left; }
 .hero::before { background:var(--ink); }
 .home .hero-copy { max-width:none; margin:0; text-align:left; }
-.hero-kicker { display:inline-block; margin:0 0 22px; padding:7px 13px; border:2px solid var(--yellow); border-radius:100px; color:var(--yellow); font-size:11px; font-weight:900; letter-spacing:.17em; }
-.hero-kicker span { margin:0 5px; font-size:15px; }
 .home .hero h1 { margin:0; color:var(--cream); font-size:clamp(3.7rem,6.4vw,6.3rem); line-height:.98; letter-spacing:-.075em; text-shadow:none; }
 .home .hero h1 em { color:var(--yellow); font-style:normal; text-decoration:underline; text-decoration-thickness:5px; text-underline-offset:10px; }
-.home .hero .intro { max-width:500px; margin:28px 0 0; color:#e6e8e9; font-size:clamp(16px,1.7vw,19px); }
 .home .hero .button-line { justify-content:flex-start; margin-top:35px; }
 .button,.home .hero .button,.score-actions .button { display:inline-block; border:2px solid var(--ink); border-radius:100px; background:var(--yellow); color:var(--ink); box-shadow:var(--shadow); font-weight:900; text-decoration:none; transition:transform .18s ease,box-shadow .18s ease,background .18s ease; }
 .button:hover,.home .hero .button:hover,.score-actions .button:hover { background:var(--mint); color:var(--ink); transform:translate(-2px,-2px); box-shadow:8px 8px 0 var(--ink); }
@@ -130,7 +127,6 @@ input,select,textarea { border:2px solid var(--ink); border-radius:8px; backgrou
 @media (max-width:850px) {
  .home .hero { grid-template-columns:minmax(0,1fr); gap:55px; padding:65px 0 85px; }
  .home .hero-copy { min-width:0; text-align:center; }
- .home .hero .intro { margin:24px auto 0; }
  .home .hero .button-line { justify-content:center; }
  .hero-console { width:min(75vw,370px); }
 }
@@ -144,7 +140,6 @@ input,select,textarea { border:2px solid var(--ink); border-radius:8px; backgrou
  .site-header .game-nav,.home .site-header .game-nav { flex-wrap:nowrap; overflow-x:auto; scrollbar-width:thin; }
  .site-header .game-nav a,.home .site-header .game-nav a { white-space:nowrap; }
  .home .hero h1 { font-size:clamp(2.25rem,9vw,4rem); }
- .home .hero .intro { max-width:100%; }
  .hero-console { width:min(60vw,260px); }
  .screen-message { font-size:clamp(42px,10vw,65px); }
  .game-grid { grid-template-columns:1fr; gap:20px; }
