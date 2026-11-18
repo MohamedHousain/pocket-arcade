@@ -7,6 +7,7 @@ body::before { content:""; position:fixed; inset:0; z-index:-1; pointer-events:n
 a { color:var(--ink); }
 a:hover { color:#b52e4d; }
 a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline:3px solid #e63157; outline-offset:4px; }
+.brand:focus:not(:focus-visible) { outline:none; }
 h1,h2,h3,.brand { font-family:'Arial Black','Trebuchet MS',Arial,sans-serif; font-weight:900; letter-spacing:-.055em; }
 h2 { letter-spacing:-.05em; }
 .site-header,.home .site-header { position:relative; z-index:3; background:var(--paper); border-bottom:3px solid var(--ink); padding:12px 0 0; }
