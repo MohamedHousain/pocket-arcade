@@ -165,3 +165,58 @@ input,select,textarea { border:2px solid var(--ink); border-radius:8px; backgrou
  .screen-cursor { animation:none; }
  .game-card,.button { transition:none; }
 }
+
+/* Lights Out: a bright grid inside a dark arcade cabinet. */
+.lights-game { background:#f6f3ff; }
+.lights-game .game-toolbar .stat:first-child { background:var(--lavender); }
+.lights-game .game-toolbar .stat:nth-child(2) { background:var(--yellow); }
+.board-label { display:flex; justify-content:space-between; width:min(100%,470px); box-sizing:border-box; margin:25px auto 0; padding:7px 12px; color:var(--ink); font-size:12px; font-weight:900; letter-spacing:.18em; }
+.lights-board { width:min(100%,470px); gap:10px; margin:2px auto 26px; padding:19px; border:4px solid var(--ink); border-radius:22px; background:#222d49; box-shadow:7px 7px 0 var(--ink),inset 0 0 0 5px #485576; }
+.light-cell { border:2px solid #62708e; border-radius:11px; background:#34415f; box-shadow:inset 0 5px 8px #141d36; transition:transform .15s ease,background .15s ease,box-shadow .15s ease; }
+.light-cell.is-on { border-color:#fff3aa; background:var(--yellow); box-shadow:inset 0 0 0 5px #fff4b7,0 0 19px #ffce45b0; }
+.light-cell:not(:disabled):hover { filter:none; transform:scale(1.07); z-index:1; }
+.lights-game .game-controls { justify-content:center; }
+.lights-game .game-controls .button { padding:11px 24px; }
+
+/* Code Guess: colorful selection tiles, clear attempt history, and matching controls. */
+.code-game { background:#f7f4ff; }
+.code-game-header { display:flex; justify-content:space-between; align-items:center; gap:14px; margin-bottom:25px; padding-bottom:17px; border-bottom:2px dashed var(--ink); }
+.code-lab-label { display:inline-block; padding:7px 12px; border:2px solid var(--ink); border-radius:100px; background:var(--pink); color:var(--ink); font-size:12px; font-weight:900; letter-spacing:.13em; box-shadow:2px 2px 0 var(--ink); }
+.code-lab-label span { margin-left:5px; font-size:16px; }
+.code-attempt { padding:7px 14px; border:2px solid var(--ink); border-radius:100px; background:var(--yellow); color:var(--ink); font-weight:800; }
+.code-attempt strong { color:var(--ink); }
+.code-form-heading h3,.code-history-heading h3 { color:var(--ink); font-family:'Arial Black','Trebuchet MS',Arial,sans-serif; font-size:clamp(22px,3vw,29px); font-weight:900; letter-spacing:-.055em; }
+.code-form-heading p,.code-history-heading span { color:#4c5668; }
+.code-picks { max-width:610px; gap:12px; margin:22px auto 26px; }
+.code-slot { min-height:135px; padding:10px 4px; border:3px solid var(--ink); border-radius:15px; background:var(--paper); box-shadow:4px 4px 0 var(--ink); transition:transform .15s ease,background .15s ease; }
+.code-slot:hover,.code-slot.is-selected { transform:translateY(-3px); background:var(--mint); }
+.code-slot-number { color:var(--ink); font-weight:900; }
+.code-slot-name { color:var(--ink); }
+.code-slot-peg { width:clamp(46px,7vw,70px); height:clamp(46px,7vw,70px); border:3px solid var(--ink); box-shadow:inset 0 5px 8px #ffffff65,3px 4px 0 #18233850; }
+.code-slot.is-selected .code-slot-peg { outline:3px solid var(--pink); outline-offset:4px; }
+.code-palette { gap:10px; }
+.code-color { min-height:85px; border:2px solid var(--ink); border-radius:13px; background:var(--paper); color:var(--ink); font-weight:800; box-shadow:3px 3px 0 var(--ink); transition:transform .15s ease,background .15s ease; }
+.code-color:nth-child(3n+1) { background:#ffe6d9; }
+.code-color:nth-child(3n+2) { background:#fff1b9; }
+.code-color:nth-child(3n+3) { background:#dbefdc; }
+.code-color:not(:disabled):hover,.code-color.is-current { transform:translateY(-3px); border-color:var(--ink); background:var(--lavender); }
+.code-color-dot { width:29px; height:29px; border:2px solid var(--ink); }
+.code-actions { gap:12px; margin-top:27px; }
+.code-game .code-actions .button,.code-game .code-actions .control { min-height:44px; margin:0; padding:10px 22px; border:2px solid var(--ink); border-radius:100px; color:var(--ink); font-weight:900; box-shadow:4px 4px 0 var(--ink); }
+.code-game .code-actions .button { background:var(--yellow); }
+.code-game .code-actions .button:hover { background:var(--mint); }
+.code-game .code-actions .control { background:var(--paper); }
+.code-game .code-actions .control:hover { background:var(--lavender); }
+.code-history-heading { border-top:2px dashed var(--ink); }
+.code-row { border:2px solid var(--ink); border-radius:10px; background:var(--paper); box-shadow:2px 2px 0 var(--ink); }
+.code-row-number { color:var(--ink); }
+.code-clue { color:var(--ink); font-weight:800; }
+@media (max-width:520px) {
+ .lights-board { gap:6px; padding:12px; }
+ .code-game-header { flex-wrap:wrap; }
+ .code-picks { gap:7px; }
+ .code-slot { min-height:110px; padding:8px 2px; }
+ .code-palette { gap:7px; }
+ .code-color { min-height:75px; }
+}
+@media (prefers-reduced-motion:reduce) { .light-cell,.code-slot,.code-color { transition:none; } }

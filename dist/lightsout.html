@@ -7,15 +7,16 @@
  <title>Lights Out | Pocket Arcade</title>
  <link rel="stylesheet" href="css/style.css?v=10">
  <link rel="stylesheet" href="css/games.css?v=10">
- <link rel="stylesheet" href="css/theme.css?v=3">
+ <link rel="stylesheet" href="css/theme.css?v=4">
 </head>
 <body>
  <a class="skip" href="#content">Skip to content</a>
  <header class="site-header"><div class="wrap"><a class="brand" href="index.html?v=10"><span class="brand-mark">✳</span>Pocket Arcade</a><nav class="primary-nav" aria-label="Main navigation"><a href="index.html?v=10">Arcade</a><a href="scorecard.html?v=10">Score sheet</a><a href="about.html?v=10">About</a></nav><nav class="game-nav" aria-label="Games"><a href="minesweeper.html?v=10">Minesweeper</a><a href="dots.html?v=10">Connect the Dots</a><a href="memory.html?v=10">Memory Match</a><a href="lightsout.html?v=10" class="current" aria-current="page">Lights Out</a><a href="codeguess.html?v=10">Code Guess</a><a href="numberslide.html?v=10">Number Slide</a></nav></div></header>
  <main id="content" class="wrap">
   <div class="page-heading game-heading"><a class="back-link" href="index.html?v=10#games">← All games</a><h1>Lights Out</h1><p>Turn off every light. A move flips the selected square and its neighbours.</p></div>
-  <section class="game-shell" aria-label="Lights Out game">
+  <section class="game-shell lights-game" aria-label="Lights Out game">
    <div class="game-toolbar"><span class="stat">Moves <strong id="lights-moves">0</strong></span><span class="stat">Lights on <strong id="lights-count">0</strong></span></div>
+   <p class="board-label"><span>POWER GRID</span><span>05 × 05</span></p>
    <div id="lights-board" class="lights-board" aria-label="Five by five Lights Out board"></div>
    <p id="lights-status" class="game-status" role="status" aria-live="polite">Choose a light to begin.</p>
    <div class="game-controls"><button type="button" class="button" id="lights-reset">Reset board</button></div>
