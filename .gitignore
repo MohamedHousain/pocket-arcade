@@ -12,7 +12,3 @@ Thumbs.db
 .env
 .env.*
 !.env.example
-
-# Unused artwork retained locally from the original version
-dist/assets/snake.png
-dist/assets/number.png
